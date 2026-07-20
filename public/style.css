@@ -86,6 +86,25 @@ body {
 }
 .status-dot.green { background: var(--success); }
 
+/* Auto Badge Box */
+.auto-badge-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: var(--accent);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    min-height: 42px;
+}
+
+.badge-icon {
+    font-size: 16px;
+}
+
 /* Workspace Layout */
 .workspace {
     display: flex;
@@ -419,18 +438,13 @@ input[type="text"]:focus, select:focus, input[type="number"]:focus {
     gap: 12px;
 }
 
-/* ==========================================================================
-   MOBILE & TABLET RESPONSIVE MEDIA QUERIES
-   ========================================================================== */
-
-/* Tablet Layout (<= 992px) */
+/* Responsive Media Queries */
 @media (max-width: 992px) {
     .card-grid-3 {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-/* Mobile & Small Tablets (<= 768px) */
 @media (max-width: 768px) {
     .app-header {
         flex-direction: column;
@@ -473,7 +487,6 @@ input[type="text"]:focus, select:focus, input[type="number"]:focus {
     }
 }
 
-/* Small Phones (<= 480px) */
 @media (max-width: 480px) {
     .app-container {
         padding: 10px;

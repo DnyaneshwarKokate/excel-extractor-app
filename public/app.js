@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const excelPathInput = document.getElementById('excelPathInput');
     const browseExcelBtn = document.getElementById('browseExcelBtn');
     const excelFilePicker = document.getElementById('excelFilePicker');
-    const sheetSelect = document.getElementById('sheetSelect');
     const dropzone = document.getElementById('dropzone');
     const imageFileInput = document.getElementById('imageFileInput');
     const pdfFileInput = document.getElementById('pdfFileInput');
@@ -24,51 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let extractedRecords = [];
     let mediaStream = null;
     let selectedExcelFile = null;
-
-    const monthNames = [
-        "January", "Feburary", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-
-    // Auto-detect Month Sheet from Date string (DD.MM.YYYY)
-    function getMonthSheetFromDate(dateStr) {
-        if (!dateStr) return "June - 2026";
-        const parts = dateStr.replace('/', '.').replace('-', '.').split('.');
-        if (parts.length === 3) {
-            const monthIdx = parseInt(parts[1], 10) - 1;
-            let year = parts[2];
-            if (year.length === 2) year = '20' + year;
-            if (monthIdx >= 0 && monthIdx < 12) {
-                return `${monthNames[monthIdx]} - ${year}`;
-            }
-        }
-        return "June - 2026";
-    }
-
-    function autoSelectMonthSheet(records) {
-        if (!records || records.length === 0) return;
-        const firstDate = records[0].date;
-        const detectedSheet = getMonthSheetFromDate(firstDate);
-
-        // Check if option exists in dropdown
-        let optionExists = false;
-        for (let i = 0; i < sheetSelect.options.length; i++) {
-            if (sheetSelect.options[i].value === detectedSheet) {
-                optionExists = true;
-                break;
-            }
-        }
-
-        // Add option dynamically if missing
-        if (!optionExists) {
-            const newOpt = document.createElement('option');
-            newOpt.value = detectedSheet;
-            newOpt.textContent = detectedSheet;
-            sheetSelect.appendChild(newOpt);
-        }
-
-        sheetSelect.value = detectedSheet;
-    }
 
     // Excel File Browse Handler
     browseExcelBtn.addEventListener('click', () => {
@@ -180,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (data.success) {
                 extractedRecords = extractedRecords.concat(data.records);
-                autoSelectMonthSheet(extractedRecords);
                 renderPreviewTable();
                 resultsSection.classList.remove('hidden');
             } else {
@@ -215,9 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.updateRecord = (idx, field, val) => {
         extractedRecords[idx][field] = val;
-        if (field === 'date') {
-            autoSelectMonthSheet(extractedRecords);
-        }
     };
 
     window.deleteRecord = (idx) => {
@@ -225,8 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderPreviewTable();
         if (extractedRecords.length === 0) {
             resultsSection.classList.add('hidden');
-        } else {
-            autoSelectMonthSheet(extractedRecords);
         }
     };
 
@@ -238,10 +186,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         loadingOverlay.classList.remove('hidden');
-        loadingText.textContent = 'Inserting entries into Excel Report...';
+        loadingText.textContent = 'Auto-detecting month sheets & inserting into Excel...';
 
         const formData = new FormData();
-        formData.append('sheetName', sheetSelect.value);
         formData.append('records', JSON.stringify(extractedRecords));
 
         if (selectedExcelFile) {
@@ -272,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadingOverlay.classList.add('hidden');
 
                 if (data.success) {
-                    alert(`🎉 SUCCESS! Successfully inserted ${data.addedRows.length} entries into Excel sheet "${sheetSelect.value}" starting at Row ${data.addedRows[0]}!`);
+                    alert(`🎉 SUCCESS! Successfully inserted ${data.addedRows.length} entries into Excel automatically matched by image dates!`);
                     extractedRecords = [];
                     resultsSection.classList.add('hidden');
                 } else {
