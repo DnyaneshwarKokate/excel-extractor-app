@@ -1,6 +1,6 @@
 # ✨ Job Card & Purchase Order OCR Excel Extractor
 
-A high-performance Node.js & Express web application powered by **Apple Native Vision OCR (`VNRecognizeTextRequest`)** to extract structured production data from printed and handwritten Job Cards and Purchase Orders, writing directly into Excel reports (`Daily Production Report - 2026.xlsx`) with zero corruption guarantee.
+A high-performance Node.js & Express web application powered by **Apple Native Vision OCR (`VNRecognizeTextRequest`)** and **PDFKit** to extract structured production data from printed and handwritten Job Cards and Purchase Orders, writing directly into Excel reports (`Daily Production Report - 2026.xlsx`) with zero corruption guarantee.
 
 ---
 
@@ -8,7 +8,7 @@ A high-performance Node.js & Express web application powered by **Apple Native V
 
 - 👁️ **Apple Native Vision OCR Engine**: High-precision text recognition for printed and handwritten industrial Job Cards and Purchase Orders.
 - 📁 **3 Flexible Input Options**:
-  1. **Browse Images**: Support for `.jpg`, `.jpeg`, `.png`, `.webp`.
+  1. **Browse Images**: Upload `.jpg`, `.jpeg`, `.png`, `.webp`.
   2. **Live Camera Access**: WebRTC webcam feed to snap physical Job Cards directly from laptop/phone camera.
   3. **Native PDF Import**: Multi-page PDF document rendering and OCR extraction via Apple `PDFKit`.
 - 📊 **Browse Excel File Picker**: Select target `.xlsx` report files via Finder file picker or local disk paths.
@@ -19,7 +19,7 @@ A high-performance Node.js & Express web application powered by **Apple Native V
   - XML Namespace & Shared String Table preservation.
   - Automatic timestamped backups generated in `~/Downloads/Excel_Backups/`.
   - Duplicate Job Card guard to prevent duplicate entries.
-- ☁️ **1-Click Free Deployment on Render.com**: Includes `render.yaml` blueprint for instant cloud deployment.
+- ☁️ **Dual Free Deployment (Netlify & Render)**: Includes `netlify.toml` and `render.yaml` for 1-click cloud deployment.
 
 ---
 
@@ -53,12 +53,22 @@ Double-click **`start.command`** in Finder to launch the server and automaticall
 
 ---
 
-## ☁️ Free Deployment on Render.com
+## ☁️ Free Cloud Deployment Guides
 
-1. Push this repository to GitHub.
-2. Go to **[Render.com Dashboard](https://dashboard.render.com)** → Click **New +** → Select **Blueprint**.
+### Option A: Deploy on Netlify
+1. Push your repository to GitHub:
+   ```bash
+   git add . && git commit -m "Update Netlify config" && git push origin main
+   ```
+2. Go to **[Netlify.com Dashboard](https://app.netlify.com)** → Click **Add new site** → **Import an existing project**.
+3. Select GitHub and pick `excel-extractor-app`.
+4. Netlify will automatically build and deploy using `netlify.toml`.
+
+### Option B: Deploy on Render.com
+1. Push your repository to GitHub.
+2. Go to **[Render.com Dashboard](https://dashboard.render.com)** → Click **New +** → **Blueprint**.
 3. Connect your `excel-extractor-app` GitHub repository.
-4. Render automatically builds and deploys your web app using `render.yaml`.
+4. Render will deploy automatically using `render.yaml`.
 
 ---
 
@@ -70,11 +80,14 @@ excel-extractor-app/
 │   ├── index.html        # Modern glassmorphic Web Interface
 │   ├── style.css         # Responsive CSS Stylesheet
 │   └── app.js            # Client-side JavaScript & Camera Handlers
+├── functions/
+│   └── api.js            # Netlify Functions Serverless Endpoint
 ├── excel_helper.py       # Python OpenXML Excel Manipulation Engine
 ├── ocr_parser.py         # Structured Regex & Positional Text Extractor
 ├── ocr.swift             # Native Apple Vision + PDFKit Swift Source
 ├── ocr_engine            # Compiled Native Swift Binary
 ├── server.js             # Express.js Server API
+├── netlify.toml          # Netlify Deployment Configuration
 ├── render.yaml           # Render.com Deployment Blueprint
 ├── start.command         # macOS Desktop Launcher
 └── README.md             # Project Documentation
