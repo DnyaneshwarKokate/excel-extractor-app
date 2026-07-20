@@ -7,11 +7,13 @@ A high-performance Node.js & Express web application powered by **Apple Native V
 ## 🌟 Key Features
 
 - 👁️ **Apple Native Vision OCR Engine**: High-precision text recognition for printed and handwritten industrial Job Cards and Purchase Orders.
+- ⚡ **100% Automatic Month Sheet Routing**: Automatically recognizes document dates (`DD.MM.YYYY`) and routes records directly to their matching month sheet (`June - 2026`, `July - 2026`, `May - 2026`) in Excel.
 - 📁 **3 Flexible Input Options**:
   1. **Browse Images**: Upload `.jpg`, `.jpeg`, `.png`, `.webp`.
   2. **Live Camera Access**: WebRTC webcam feed to snap physical Job Cards directly from laptop/phone camera.
   3. **Native PDF Import**: Multi-page PDF document rendering and OCR extraction via Apple `PDFKit`.
 - 📊 **Browse Excel File Picker**: Select target `.xlsx` report files via Finder file picker or local disk paths.
+- 📱 **100% Multi-Device Responsive UI**: Mobile-first design optimized for mobile phones, tablets, iPads, and desktop displays.
 - 🏢 **Authentic Multi-Customer & Part Number Extractor**:
   - Automatically identifies customers (*Tata Motors, Exide Industries, Thermax, Sany Heavy Industry, Godrej & Boyce, Fiat India, Electropneumatics, Ukay Metal, Bharat Engg*).
   - Extracts exact item codes (`SSY...`, `B0...`, `D11...`, `55121606SD...`, `00934194500E`, `6740...`), descriptions, quantities, Sq.Ft, and PO numbers.
@@ -19,7 +21,7 @@ A high-performance Node.js & Express web application powered by **Apple Native V
   - XML Namespace & Shared String Table preservation.
   - Automatic timestamped backups generated in `~/Downloads/Excel_Backups/`.
   - Duplicate Job Card guard to prevent duplicate entries.
-- ☁️ **Dual Free Deployment (Netlify & Render)**: Includes `netlify.toml` and `render.yaml` for 1-click cloud deployment.
+- ☁️ **Dual Free Deployment (Render & Netlify)**: Includes `render.yaml` and `netlify.toml` for 1-click cloud deployment.
 
 ---
 
@@ -32,7 +34,7 @@ A high-performance Node.js & Express web application powered by **Apple Native V
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/excel-extractor-app.git
+git clone https://github.com/DnyaneshwarKokate/excel-extractor-app.git
 cd excel-extractor-app
 npm install
 ```
@@ -55,20 +57,21 @@ Double-click **`start.command`** in Finder to launch the server and automaticall
 
 ## ☁️ Free Cloud Deployment Guides
 
-### Option A: Deploy on Netlify
+### Option A: Deploy on Render.com
 1. Push your repository to GitHub:
    ```bash
-   git add . && git commit -m "Update Netlify config" && git push origin main
+   git add . && git commit -m "Update Render config" && git push origin main
    ```
+2. Go to **[Render.com Dashboard](https://dashboard.render.com)** → Click **New +** → **Blueprint**.
+3. Connect your `DnyaneshwarKokate/excel-extractor-app` GitHub repository.
+4. Render will deploy automatically using `render.yaml`.
+   - **Start Command**: `node server.js`
+
+### Option B: Deploy on Netlify
+1. Push your repository to GitHub.
 2. Go to **[Netlify.com Dashboard](https://app.netlify.com)** → Click **Add new site** → **Import an existing project**.
 3. Select GitHub and pick `excel-extractor-app`.
 4. Netlify will automatically build and deploy using `netlify.toml`.
-
-### Option B: Deploy on Render.com
-1. Push your repository to GitHub.
-2. Go to **[Render.com Dashboard](https://dashboard.render.com)** → Click **New +** → **Blueprint**.
-3. Connect your `excel-extractor-app` GitHub repository.
-4. Render will deploy automatically using `render.yaml`.
 
 ---
 
@@ -78,7 +81,7 @@ Double-click **`start.command`** in Finder to launch the server and automaticall
 excel-extractor-app/
 ├── public/
 │   ├── index.html        # Modern glassmorphic Web Interface
-│   ├── style.css         # Responsive CSS Stylesheet
+│   ├── style.css         # Responsive Multi-Device Stylesheet
 │   └── app.js            # Client-side JavaScript & Camera Handlers
 ├── functions/
 │   └── api.js            # Netlify Functions Serverless Endpoint
