@@ -1,37 +1,49 @@
 import Foundation
 import Vision
 import AppKit
+import PDFKit
 
-guard CommandLine.arguments.count > 1 else {
-    print("Usage: ocr_engine <image_path>")
-    exit(1)
-}
-
-let imagePath = CommandLine.arguments[1]
-guard let image = NSImage(contentsOfFile: imagePath),
-      let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
-    print("Error: Failed to load image at \(imagePath)")
-    exit(1)
-}
-
-var textLines: [String] = []
-
-let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-let request = VNRecognizeTextRequest { request, error in
-    guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
-    for observation in observations {
-        if let topCandidate = observation.topCandidates(1).first {
-            textLines.append(topCandidate.string)
+func recognizeText(cgImage: CGImage) {
+    let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+    let request = VNRecognizeTextRequest { (request, error) in
+        guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
+        for observation in observations {
+            guard let topCandidate = observation.topCandidates(1).first else { continue }
+            print(topCandidate.string)
         }
     }
+    request.recognitionLevel = .accurate
+    request.usesLanguageCorrection = true
+    try? requestHandler.perform([request])
 }
 
-request.recognitionLevel = .accurate
-request.usesLanguageCorrection = true
+let args = CommandLine.arguments
+if args.count > 1 {
+    let filePath = args[1]
+    let fileURL = URL(fileURLWithPath: filePath)
+    let ext = fileURL.pathExtension.lowercased()
 
-do {
-    try requestHandler.perform([request])
-    print(textLines.joined(separator: "\n"))
-} catch {
-    print("Error: \(error)")
+    if ext == "pdf" {
+        if let pdfDoc = PDFDocument(url: fileURL) {
+            for i in 0..<pdfDoc.pageCount {
+                if let page = pdfDoc.page(at: i) {
+                    let pageRect = page.bounds(for: .mediaBox)
+                    let image = NSImage(size: pageRect.size)
+                    image.lockFocus()
+                    if let context = NSGraphicsContext.current?.cgContext {
+                        page.draw(with: .mediaBox, to: context)
+                    }
+                    image.unlockFocus()
+                    if let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) {
+                        recognizeText(cgImage: cgImage)
+                    }
+                }
+            }
+        }
+    } else {
+        if let image = NSImage(contentsOfFile: filePath),
+           let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) {
+            recognizeText(cgImage: cgImage)
+        }
+    }
 }

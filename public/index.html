@@ -3,117 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Job Card & PO Data Extractor</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Job Card & PO Excel Extractor</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="app-container">
-        <!-- Header Section -->
-        <header class="main-header">
-            <div class="logo-area">
-                <div class="logo-icon">✨</div>
-                <div>
-                    <h1>Smart Job Card & PO Extractor</h1>
-                    <p class="subtitle">Extract data from images and insert directly into your Excel Daily Production Report</p>
-                </div>
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <span class="icon">✨</span>
+                <h2>Job Card & PO Extractor</h2>
             </div>
-            <div class="status-badge" id="backendStatus">
-                <span class="status-dot"></span> System Ready
+            <div class="excel-status-bar">
+                <span class="status-dot green"></span>
+                <span id="excelTargetName">Daily Production Report - 2026.xlsx</span>
             </div>
         </header>
 
-        <!-- Main Content Grid -->
-        <main class="grid-layout">
-            <!-- Left Panel: Excel Settings & Image Upload -->
-            <section class="panel glass-panel">
-                <h2 class="panel-title">
-                    <span class="step-num">1</span> Excel Destination & Image Upload
-                </h2>
+        <!-- Main Workspace -->
+        <main class="workspace">
 
-                <!-- File Path Input Group -->
-                <div class="form-group">
-                    <label for="excelPathInput">Target Excel File Location</label>
-                    <div class="input-with-action">
-                        <input type="text" id="excelPathInput" class="custom-input" 
-                               value="/Users/dnyaneshwarkokate/Dnyaneshwar_Personal/Divya/Daily Production Report - 2026.xlsx">
-                        <button id="verifyPathBtn" class="btn btn-secondary">Check File</button>
-                    </div>
-                    <div class="path-suggestions">
-                        <span class="path-chip" data-path="/Users/dnyaneshwarkokate/Dnyaneshwar_Personal/Divya/Daily Production Report - 2026.xlsx">📂 Personal/Divya</span>
-                        <span class="path-chip" data-path="/Users/dnyaneshwarkokate/Downloads/Daily Production Report - 2026.xlsx">📂 Downloads</span>
-                    </div>
+            <!-- Excel Settings Panel -->
+            <section class="card settings-card">
+                <div class="card-header">
+                    <h3>📊 Target Excel Report Configuration</h3>
                 </div>
-
-                <!-- Sheet Selector -->
-                <div class="form-group">
-                    <label for="sheetSelect">Select Target Sheet</label>
-                    <select id="sheetSelect" class="custom-select">
-                        <option value="June - 2026" selected>June - 2026</option>
-                        <option value="July - 2026">July - 2026</option>
-                        <option value="May - 2026">May - 2026</option>
-                    </select>
-                </div>
-
-                <!-- Drag and Drop Image Dropzone -->
-                <div class="dropzone" id="dropzone">
-                    <input type="file" id="imageFileInput" multiple accept="image/*" hidden>
-                    <div class="dropzone-content">
-                        <div class="upload-icon">📸</div>
-                        <h3>Drop Job Card / PO Images Here</h3>
-                        <p>Supports PNG, JPG, JPEG, WEBP</p>
-                        <button class="btn btn-primary browse-btn" onclick="document.getElementById('imageFileInput').click()">Browse Images</button>
+                <div class="card-body row-layout">
+                    <div class="input-group flex-2">
+                        <label for="excelPathInput">Target Excel File (Path or Browse):</label>
+                        <div class="path-browse-wrapper">
+                            <input type="text" id="excelPathInput" value="/Users/dnyaneshwarkokate/Dnyaneshwar_Personal/Divya/Daily Production Report - 2026.xlsx">
+                            <input type="file" id="excelFilePicker" accept=".xlsx, .xls" class="file-input-hidden">
+                            <button id="browseExcelBtn" class="btn primary small-btn">📂 Browse Excel</button>
+                        </div>
+                        <div class="chips-container">
+                            <span class="chip" data-path="/Users/dnyaneshwarkokate/Dnyaneshwar_Personal/Divya/Daily Production Report - 2026.xlsx">📂 Personal Folder</span>
+                            <span class="chip" data-path="/Users/dnyaneshwarkokate/Downloads/Daily Production Report - 2026.xlsx">📥 Downloads</span>
+                        </div>
+                    </div>
+                    <div class="input-group flex-1">
+                        <label for="sheetSelect">Select Month Sheet:</label>
+                        <select id="sheetSelect">
+                            <option value="June - 2026" selected>June - 2026</option>
+                            <option value="July - 2026">July - 2026</option>
+                            <option value="May - 2026">May - 2026</option>
+                        </select>
                     </div>
                 </div>
-
-                <!-- Image Thumbnails Preview -->
-                <div class="thumbnails-container" id="thumbnailsContainer"></div>
             </section>
 
-            <!-- Right Panel: Extracted Data Table -->
-            <section class="panel glass-panel">
-                <div class="panel-header-flex">
-                    <h2 class="panel-title">
-                        <span class="step-num">2</span> Extracted Data Preview
-                    </h2>
+            <!-- 3 Import Options Cards -->
+            <section class="card-grid-3">
+                
+                <!-- Option 1: Browse Images -->
+                <div class="upload-option-card" id="browseImagesCard">
+                    <div class="option-icon">🖼️</div>
+                    <h4>Browse Images</h4>
+                    <p>Upload JPG, PNG, WEBP Job Cards or Purchase Orders</p>
+                    <input type="file" id="imageFileInput" multiple accept="image/*" class="file-input-hidden">
+                    <button class="btn primary" onclick="document.getElementById('imageFileInput').click()">Choose Images</button>
+                </div>
+
+                <!-- Option 2: Live Camera Access -->
+                <div class="upload-option-card" id="cameraAccessCard">
+                    <div class="option-icon">📷</div>
+                    <h4>Camera Access</h4>
+                    <p>Take live photo of Job Card directly from webcam / phone camera</p>
+                    <button class="btn secondary" id="openCameraBtn">Open Camera</button>
+                </div>
+
+                <!-- Option 3: PDF Import -->
+                <div class="upload-option-card" id="pdfImportCard">
+                    <div class="option-icon">📄</div>
+                    <h4>PDF Import</h4>
+                    <p>Import single or multi-page PDF documents for OCR extraction</p>
+                    <input type="file" id="pdfFileInput" multiple accept="application/pdf" class="file-input-hidden">
+                    <button class="btn accent" onclick="document.getElementById('pdfFileInput').click()">Import PDF</button>
+                </div>
+
+            </section>
+
+            <!-- Drag & Drop Zone -->
+            <div id="dropzone" class="dropzone">
+                <div class="dropzone-content">
+                    <span class="upload-icon">☁️</span>
+                    <p>Or drag & drop your Job Cards, PO Images, or PDF files anywhere here</p>
+                </div>
+            </div>
+
+            <!-- Loading Overlay -->
+            <div id="loadingOverlay" class="loading-overlay hidden">
+                <div class="spinner"></div>
+                <p id="loadingText">Running Apple Vision OCR & Extracting Data...</p>
+            </div>
+
+            <!-- Results Section -->
+            <section id="resultsSection" class="card results-card hidden">
+                <div class="card-header space-between">
+                    <div>
+                        <h3>🔍 Extracted Data Preview</h3>
+                        <p class="subtitle">Review and edit fields before inserting into Excel</p>
+                    </div>
                     <div class="actions">
-                        <button id="addManualRowBtn" class="btn btn-secondary btn-sm">+ Add Row</button>
-                        <button id="insertExcelBtn" class="btn btn-gradient" disabled>
-                            ⚡ Insert into Excel (<span id="recordCount">0</span>)
-                        </button>
+                        <button id="insertExcelBtn" class="btn success large">✨ Insert All Entries into Excel</button>
                     </div>
                 </div>
 
-                <!-- Notification Alert -->
-                <div id="alertBox" class="alert-box hidden"></div>
-
-                <!-- Data Table Container -->
                 <div class="table-responsive">
-                    <table class="data-table" id="dataTable">
+                    <table class="data-table">
                         <thead>
                             <tr>
+                                <th>Source File</th>
                                 <th>Date</th>
                                 <th>Customer Name</th>
-                                <th>Part No.</th>
-                                <th>Part Name</th>
+                                <th>Part Number</th>
+                                <th>Part Description</th>
                                 <th>Qty</th>
                                 <th>Sq.Ft</th>
-                                <th>Job Card No</th>
-                                <th>PO No</th>
-                                <th>Action</th>
+                                <th>Job Card No.</th>
+                                <th>PO No.</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="tableBody">
-                            <tr class="empty-row" id="emptyRowState">
-                                <td colspan="9">
-                                    <div class="empty-state">
-                                        <div class="empty-icon">📊</div>
-                                        <p>No images processed yet. Upload Job Cards or Purchase Orders to extract data.</p>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tbody id="previewTableBody">
+                            <!-- Populated dynamically -->
                         </tbody>
                     </table>
                 </div>
@@ -121,10 +135,22 @@
         </main>
     </div>
 
-    <!-- Loading Overlay -->
-    <div class="loading-overlay hidden" id="loadingOverlay">
-        <div class="spinner"></div>
-        <p id="loadingText">Extracting text & patterns from image...</p>
+    <!-- Live Camera Modal -->
+    <div id="cameraModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📷 Live Camera Feed</h3>
+                <button class="close-btn" id="closeCameraBtn">&times;</button>
+            </div>
+            <div class="camera-body">
+                <video id="cameraVideo" autoplay playsinline></video>
+                <canvas id="cameraCanvas" class="hidden"></canvas>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="closeCameraFooterBtn">Cancel</button>
+                <button class="btn primary" id="snapPhotoBtn">📸 Take Photo & Extract</button>
+            </div>
+        </div>
     </div>
 
     <script src="app.js"></script>
