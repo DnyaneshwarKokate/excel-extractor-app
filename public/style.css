@@ -25,20 +25,24 @@ body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .app-container {
+    width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 24px;
+    padding: clamp(12px, 3vw, 24px);
 }
 
 /* Header */
 .app-header {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 24px;
+    gap: 16px;
+    padding-bottom: 20px;
     border-bottom: 1px solid var(--card-border);
     margin-bottom: 24px;
 }
@@ -50,10 +54,11 @@ body {
 }
 
 .logo .icon {
-    font-size: 28px;
+    font-size: clamp(24px, 4vw, 32px);
 }
 
 .logo h2 {
+    font-size: clamp(18px, 3vw, 24px);
     font-weight: 700;
     letter-spacing: -0.5px;
 }
@@ -66,67 +71,92 @@ body {
     padding: 8px 16px;
     border-radius: 20px;
     border: 1px solid var(--card-border);
-    font-size: 14px;
+    font-size: clamp(12px, 2vw, 14px);
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .status-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
+    flex-shrink: 0;
 }
 .status-dot.green { background: var(--success); }
 
-/* Workspace */
+/* Workspace Layout */
 .workspace {
     display: flex;
     flex-direction: column;
     gap: 24px;
+    width: 100%;
 }
 
 .card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: var(--border-radius);
-    padding: 20px;
+    padding: clamp(16px, 3vw, 24px);
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .card-header h3 {
-    font-size: 16px;
+    font-size: clamp(15px, 2.5vw, 18px);
     font-weight: 600;
 }
 
-/* 3 Import Cards Grid */
+.space-between {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* 3 Import Cards Responsive Grid */
 .card-grid-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
+    width: 100%;
 }
 
 .upload-option-card {
     background: var(--bg-secondary);
     border: 1px dashed var(--card-border);
     border-radius: var(--border-radius);
-    padding: 24px;
+    padding: 24px 16px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 12px;
-    transition: all 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
 }
 
 .upload-option-card:hover {
     border-color: var(--accent);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     background: #243347;
+    box-shadow: 0 8px 24px rgba(56, 189, 248, 0.15);
 }
 
 .option-icon {
-    font-size: 36px;
+    font-size: clamp(32px, 5vw, 42px);
 }
 
 .upload-option-card h4 {
-    font-size: 18px;
+    font-size: clamp(16px, 2.5vw, 18px);
     font-weight: 600;
 }
 
@@ -141,44 +171,45 @@ body {
     display: none;
 }
 
-/* Path Browse Wrapper */
-.path-browse-wrapper {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.path-browse-wrapper input[type="text"] {
-    flex-grow: 1;
-}
-
-.small-btn {
-    white-space: nowrap;
-    padding: 10px 16px;
-    font-size: 13px;
-}
-
-/* Inputs & Chips */
+/* Path & Config Layout */
 .row-layout {
     display: flex;
+    flex-wrap: wrap;
     gap: 20px;
     margin-top: 16px;
+    width: 100%;
 }
-.flex-2 { flex: 2; }
-.flex-1 { flex: 1; }
+
+.flex-2 { flex: 2 1 300px; }
+.flex-1 { flex: 1 1 200px; }
 
 .input-group {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    width: 100%;
 }
 
 .input-group label {
     font-size: 13px;
     color: var(--text-secondary);
+    font-weight: 500;
 }
 
-input[type="text"], select {
+.path-browse-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+}
+
+.path-browse-wrapper input[type="text"] {
+    flex: 1 1 220px;
+    min-width: 0;
+}
+
+input[type="text"], select, input[type="number"] {
     background: #0f172a;
     border: 1px solid var(--card-border);
     border-radius: 8px;
@@ -186,15 +217,17 @@ input[type="text"], select {
     color: var(--text-primary);
     font-size: 14px;
     width: 100%;
+    transition: border-color 0.2s ease;
 }
 
-input[type="text"]:focus, select:focus {
+input[type="text"]:focus, select:focus, input[type="number"]:focus {
     outline: none;
     border-color: var(--accent);
 }
 
 .chips-container {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     margin-top: 6px;
 }
@@ -202,15 +235,18 @@ input[type="text"]:focus, select:focus {
 .chip {
     background: #334155;
     color: var(--text-primary);
-    padding: 4px 10px;
-    border-radius: 12px;
+    padding: 6px 12px;
+    border-radius: 14px;
     font-size: 12px;
     cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
 }
 
 .chip:hover {
     background: var(--accent);
-    color: #000;
+    color: #0f172a;
+    font-weight: 500;
 }
 
 /* Buttons */
@@ -221,7 +257,13 @@ input[type="text"]:focus, select:focus {
     font-size: 14px;
     border: none;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    min-height: 42px;
 }
 .btn.primary { background: var(--accent); color: #0f172a; }
 .btn.primary:hover { background: var(--accent-hover); color: #fff; }
@@ -235,34 +277,45 @@ input[type="text"]:focus, select:focus {
 .btn.success { background: var(--success); color: #fff; }
 .btn.success:hover { background: var(--success-hover); }
 
-.btn.large { padding: 12px 24px; font-size: 15px; }
+.btn.large { padding: 14px 28px; font-size: 16px; min-height: 48px; }
+.small-btn { padding: 8px 14px; font-size: 13px; min-height: 38px; }
 
 /* Dropzone */
 .dropzone {
     border: 2px dashed var(--card-border);
     border-radius: var(--border-radius);
-    padding: 30px;
+    padding: clamp(20px, 4vw, 36px);
     text-align: center;
     background: rgba(30, 41, 59, 0.4);
     transition: all 0.2s ease;
+    width: 100%;
 }
 .dropzone.drag-over {
     border-color: var(--accent);
     background: rgba(56, 189, 248, 0.1);
 }
 
-.upload-icon { font-size: 32px; display: block; margin-bottom: 8px; }
+.upload-icon { font-size: 36px; display: block; margin-bottom: 8px; }
 
-/* Table */
+/* Touch-Friendly Responsive Table */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--card-border);
+}
+
 .data-table {
     width: 100%;
+    min-width: 900px;
     border-collapse: collapse;
-    margin-top: 16px;
     font-size: 13px;
 }
 
 .data-table th, .data-table td {
-    padding: 12px 14px;
+    padding: 12px 10px;
     text-align: left;
     border-bottom: 1px solid var(--card-border);
 }
@@ -271,15 +324,19 @@ input[type="text"]:focus, select:focus {
     background: #0f172a;
     color: var(--text-secondary);
     font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .data-table td input {
     background: #0f172a;
     border: 1px solid var(--card-border);
     color: #fff;
-    padding: 6px 10px;
+    padding: 8px 10px;
     border-radius: 6px;
     width: 100%;
+    min-height: 36px;
 }
 
 /* Loading Overlay */
@@ -293,8 +350,8 @@ input[type="text"]:focus, select:focus {
 }
 
 .spinner {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border: 4px solid rgba(255,255,255,0.1);
     border-top-color: var(--accent);
     border-radius: 50%;
@@ -305,27 +362,30 @@ input[type="text"]:focus, select:focus {
 
 .hidden { display: none !important; }
 
-/* Modal */
+/* Responsive Modal */
 .modal {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.85);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    padding: 16px;
 }
 
 .modal-content {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: var(--border-radius);
-    width: 90%;
+    width: 100%;
     max-width: 640px;
+    max-height: 90vh;
     padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 16px;
+    overflow-y: auto;
 }
 
 .modal-header {
@@ -338,19 +398,100 @@ input[type="text"]:focus, select:focus {
     background: none;
     border: none;
     color: var(--text-secondary);
-    font-size: 24px;
+    font-size: 28px;
     cursor: pointer;
+    line-height: 1;
 }
 
 .camera-body video {
     width: 100%;
-    max-height: 400px;
+    height: auto;
+    max-height: 360px;
     background: #000;
     border-radius: 8px;
+    object-fit: cover;
 }
 
 .modal-footer {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
     gap: 12px;
+}
+
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+
+/* Tablet Layout (<= 992px) */
+@media (max-width: 992px) {
+    .card-grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile & Small Tablets (<= 768px) */
+@media (max-width: 768px) {
+    .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .excel-status-bar {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .card-grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .row-layout {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .space-between {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .actions {
+        width: 100%;
+    }
+
+    .btn.large {
+        width: 100%;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+    }
+}
+
+/* Small Phones (<= 480px) */
+@media (max-width: 480px) {
+    .app-container {
+        padding: 10px;
+    }
+
+    .card {
+        padding: 14px;
+    }
+
+    .upload-option-card {
+        padding: 18px 12px;
+    }
+
+    .path-browse-wrapper {
+        flex-direction: column;
+    }
+
+    .small-btn {
+        width: 100%;
+    }
 }
