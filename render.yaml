@@ -3,7 +3,7 @@ services:
     name: excel-jobcard-extractor
     env: node
     buildCommand: npm install
-    startCommand: npm start
+    startCommand: node server.js
     envVars:
       - key: PORT
         value: 3000
