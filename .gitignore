@@ -1,0 +1,10 @@
+node_modules/
+uploads/
+.module_cache/
+*.tmp
+*.tmp.xlsx
+all_extractions.json
+today_whatsapp_ocr.json
+test.jpg
+ocr_engine
+.DS_Store
